@@ -1,0 +1,31 @@
+name: .NET Framework xUnit Test
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+
+    - name: Restore NuGet packages
+      run: nuget restore TestLib.Test\TestLib.Test.csproj
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build solution
+      run: msbuild TestLib.Test\TestLib.Test.csproj /p:Configuration=Release
+
+    - name: Run tests
+      run: |
+        vstest.console.exe TestLib.Test\bin\Release\TestLib.Test.dll
