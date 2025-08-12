@@ -18,7 +18,7 @@ jobs:
       uses: nuget/setup-nuget@v2
 
     - name: Restore NuGet packages
-      run: nuget restore TestLib.Test\TestLib.Test.csproj
+      run: nuget restore TestLib.Test\TestLib.Test.csproj -SolutionDirectory .
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
