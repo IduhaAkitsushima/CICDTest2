@@ -28,4 +28,9 @@ jobs:
 
     - name: Run tests
       run: |
-        vstest.console.exe TestLib.Test\bin\Release\TestLib.Test.dll
+        $vstest = (Get-Command vstest.console.exe -ErrorAction SilentlyContinue).Source
+        if (-not $vstest) {
+          $vstest = (Get-ChildItem "C:\Program Files\Microsoft Visual Studio\2022" -Recurse -Filter vstest.console.exe | Select-Object -First 1).FullName
+        }
+        & $vstest TestLib.Test\bin\Release\TestLib.Test.dll
+      shell: pwsh
